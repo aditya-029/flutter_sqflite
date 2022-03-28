@@ -1,13 +1,11 @@
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sqflite/home_screen.dart';
+import 'package:flutter_sqflite/views/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-
-  );
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -30,19 +28,18 @@ class _MyAppState extends State<MyApp> {
     await FirebaseAnalytics.instance.logEvent(
       name: 'app_open',
     );
-    
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Sqflite Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const HomeScreen(),
+      darkTheme: ThemeData.dark(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomeScreen(),
+      },
     );
   }
 }

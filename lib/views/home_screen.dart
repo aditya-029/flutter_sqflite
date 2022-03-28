@@ -2,10 +2,11 @@
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sqflite/db_handler.dart';
-import 'package:flutter_sqflite/new_screen.dart';
+import 'package:flutter_sqflite/services/db_handler.dart';
+import 'package:flutter_sqflite/views/edit_screen.dart';
+import 'package:flutter_sqflite/views/add_notes.dart';
 
-import 'notes.dart';
+import '../models/note_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DBHelper? dbHelper;
-  late Future<List<Notes>> notesList;
+  late Future<List<NotesModel>> notesList;
   @override
   void initState() {
     super.initState();
@@ -32,31 +33,35 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter Sqflite Demo'),
+        title: const Text('Ultimate Notes'),
       ),
-      body: Column(
+      body:Column(
         children: [
           Expanded(
             child: FutureBuilder(
               future: notesList,
-              builder: (context, AsyncSnapshot<List<Notes>> snapshot) {
+              builder: (context, AsyncSnapshot<List<NotesModel>> snapshot) {
                 if (snapshot.hasData) {
-                  return Card(
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: snapshot.data?.length ?? 0,
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            dbHelper!.update(Notes(
-                                id: snapshot.data![index].id!,
-                                title: 'New title',
-                                age: 11,
-                                description: 'New Description',
-                                email: '234@gmsil.com'));
-                            setState(() {
-                              notesList = dbHelper!.getNotes();
-                            });
+                            var note = NotesModel(
+                              id: snapshot.data![index].id,
+                              title: snapshot.data![index].title,
+                              description: snapshot.data![index].description,
+
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => EditNotes(note: note),
+                              ),
+                            );
                           },
                           child: Dismissible(
                             direction: DismissDirection.endToStart,
@@ -75,8 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: ListTile(
                               title: Text(snapshot.data![index].title),
                               subtitle: Text(snapshot.data![index].description),
-                              trailing:
-                                  Text(snapshot.data![index].age.toString()),
+
                             ),
                           ),
                         );
@@ -93,29 +97,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await FirebaseAnalytics.instance
-              .setCurrentScreen(screenName: 'Products');
+          await FirebaseAnalytics.instance.setCurrentScreen(
+            screenName: 'NewData',
+          );
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => NerScreen(),
+              builder: (context) => AddNotes(),
             ),
           );
-          dbHelper!
-              .insert(Notes(
-            title: 'Second Note Title',
-            age: 20,
-            description: 'First SQFLite Note Description',
-            email: '123@email.com',
-          ))
-              .then((value) {
-            print('Inserted');
-            setState(() {
-              notesList = dbHelper!.getNotes();
-            });
-          }).onError((error, stackTrace) {
-            print(error.toString());
-          });
         },
         child: Icon(Icons.add),
       ),
