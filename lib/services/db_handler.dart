@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'notes.dart';
+import '../models/notes.dart';
 import 'package:path/path.dart';
 import 'dart:io' as io;
 
@@ -13,6 +13,12 @@ class DBHelper {
   addData() async {
     await FirebaseAnalytics.instance.logEvent(
       name: 'new_data_added',
+    );
+  }
+
+  updateData() async {
+    await FirebaseAnalytics.instance.logEvent(
+      name: 'last_data_updated',
     );
   }
 
@@ -56,7 +62,7 @@ class DBHelper {
 
   Future update(Notes notes) async {
     var dbClient = await db;
-
+    updateData();
     return await dbClient!.update(
       "notes",
       notes.toMap(),

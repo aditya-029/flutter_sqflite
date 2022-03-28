@@ -2,10 +2,10 @@
 
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_sqflite/db_handler.dart';
-import 'package:flutter_sqflite/new_screen.dart';
-
-import 'notes.dart';
+import 'package:flutter_sqflite/services/db_handler.dart';
+import 'package:flutter_sqflite/models/notes.dart';
+import 'package:flutter_sqflite/views/new_screen.dart';
+import 'package:flutter_sqflite/views/view_notes.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -48,15 +48,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            dbHelper!.update(Notes(
-                                id: snapshot.data![index].id!,
-                                title: 'New title',
-                                age: 11,
-                                description: 'New Description',
-                                email: '234@gmsil.com'));
-                            setState(() {
-                              notesList = dbHelper!.getNotes();
-                            });
+                            var note = Notes(
+                              id: snapshot.data![index].id,
+                              title: snapshot.data![index].title,
+                              age: snapshot.data![index].age,
+                              description: snapshot.data![index].description,
+                              email: snapshot.data![index].email,
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => ViewNotes(note: note),
+                              ),
+                            );
                           },
                           child: Dismissible(
                             direction: DismissDirection.endToStart,
@@ -93,29 +97,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await FirebaseAnalytics.instance
-              .setCurrentScreen(screenName: 'Products');
+          await FirebaseAnalytics.instance.setCurrentScreen(
+            screenName: 'NewData',
+          );
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => NerScreen(),
             ),
           );
-          dbHelper!
-              .insert(Notes(
-            title: 'Second Note Title',
-            age: 20,
-            description: 'First SQFLite Note Description',
-            email: '123@email.com',
-          ))
-              .then((value) {
-            print('Inserted');
-            setState(() {
-              notesList = dbHelper!.getNotes();
-            });
-          }).onError((error, stackTrace) {
-            print(error.toString());
-          });
         },
         child: Icon(Icons.add),
       ),
