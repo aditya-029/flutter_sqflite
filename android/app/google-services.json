@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "996982691203",
+    "project_id": "instant-loan-flutter",
+    "storage_bucket": "instant-loan-flutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996982691203:android:506684f63abc02595392b6",
+        "android_client_info": {
+          "package_name": "com.example.flutter_sqflite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996982691203-q1vplt5cqlufld17abdh9r5ph99jrj0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-pS_GSlKTkoBtGSWRBuJ58LfeVYZFCtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996982691203-q1vplt5cqlufld17abdh9r5ph99jrj0k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:996982691203:android:e2f2772f04fd9d5c5392b6",
+        "android_client_info": {
+          "package_name": "com.mitrafintech.instantloan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "996982691203-q1vplt5cqlufld17abdh9r5ph99jrj0k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-pS_GSlKTkoBtGSWRBuJ58LfeVYZFCtw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "996982691203-q1vplt5cqlufld17abdh9r5ph99jrj0k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
