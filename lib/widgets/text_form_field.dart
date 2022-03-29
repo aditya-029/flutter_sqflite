@@ -2,36 +2,43 @@
 
 import 'package:flutter/material.dart';
 
-class InputControllerField extends StatelessWidget {
+class InputControllerField extends StatefulWidget {
   final TextEditingController inputController;
   final String labelText;
-   bool icon= false;
-   InputControllerField({
-    Key? key,required this.icon,
+  bool icon = false;
+  InputControllerField({
+    Key? key,
+    required this.icon,
     required this.inputController,
     required this.labelText,
   }) : super(key: key);
 
+  @override
+  State<InputControllerField> createState() => _InputControllerFieldState();
+}
 
-
+class _InputControllerFieldState extends State<InputControllerField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: inputController,
+      readOnly: widget.icon,
+      controller: widget.inputController,
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return "Please enter $labelText";
+          return "Please enter ${widget.labelText}";
         }
         return null;
       },
       decoration: InputDecoration(
-        suffixIcon: Visibility(visible: icon,
-          child: IconButton(icon:const Icon(Icons.edit) ,
-          onPressed:(){
-            inputController.text='';
-          },
-          
-        
+        suffixIcon: Visibility(
+          visible: widget.icon,
+          child: IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+              setState(() {
+                widget.icon = false;
+              });
+            },
           ),
         ),
         border: const OutlineInputBorder(
@@ -40,7 +47,7 @@ class InputControllerField extends StatelessWidget {
             width: 5,
           ),
         ),
-        hintText: labelText,
+        hintText: widget.labelText,
       ),
     );
   }
