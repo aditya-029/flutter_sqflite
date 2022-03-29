@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_sqflite/models/note_model.dart';
 import 'package:flutter_sqflite/services/db_handler.dart';
 import 'package:flutter_sqflite/views/home_screen.dart';
 import 'package:flutter_sqflite/widgets/button.dart';
+import 'package:flutter_sqflite/widgets/text_form_field.dart';
 
 class AddNotes extends StatefulWidget {
   const AddNotes({Key? key}) : super(key: key);
@@ -71,42 +73,14 @@ class _AddNotesState extends State<AddNotes> {
           child: ListView(
             shrinkWrap: true,
             children: [
-              TextFormField(
-                controller: title,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter title";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.greenAccent,
-                      width: 5,
-                    ),
-                  ),
-                  hintText: "Title",
-                ),
+              InputControllerField(icon: false,
+                inputController: title,
+                labelText: 'Title',
               ),
               SizedBox(height: 20),
-              TextFormField(
-                controller: description,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Enter Description";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.greenAccent,
-                      width: 5,
-                    ),
-                  ),
-                  hintText: "Description",
-                ),
+              InputControllerField(icon: false,
+                inputController: description,
+                labelText: 'Description',
               ),
               const SizedBox(height: 20),
               ButtonWidget(
@@ -123,3 +97,4 @@ class _AddNotesState extends State<AddNotes> {
     );
   }
 }
+
